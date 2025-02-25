@@ -1,8 +1,20 @@
 import pygame
 from helpers import screen
-from constants import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK
 from constants import *
 from helpers import from_text_to_array
+from helpers import read_comment_from_user
+COLORS = {
+    "BLACK": BLACK,
+    "WHITE": WHITE,
+    "GRAY": GREY,
+    "LIGTH_GRAY": LIGHT_GRAY
+}
+
+
+def is_image(content):
+    if content.lower().endswith((".png", ".jpg", ".jpeg", ".bmp", ".gif")):
+        return True
+    return False
 
 
 class Post:
@@ -11,7 +23,7 @@ class Post:
         self.location = location
         self.description = description
         self.likes_counter = likes_counter
-        self.comments = comments
+        self.comments = []
 
     def likes(self):
         self.likes_counter += 1
@@ -42,8 +54,9 @@ class Post:
         screen.blit(description, (DESCRIPTION_TEXT_X_POS, DESCRIPTION_TEXT_Y_POS))
 
     def display_comments(self):
-        comments = font.render(self.comments, True, BLACK)
-        screen.blit(comments, (VIEW_MORE_COMMENTS_X_POS, VIEW_MORE_COMMENTS_Y_POS))
+        new_comment_text = read_comment_from_user()
+        new_comment_text = Comment(new_comment_text)
+
 
 
 class ImagePost(Post):
@@ -65,21 +78,46 @@ class TextPost(Post):
     def __init__(self, user_name, location, description, likes_counter, comments, content):
         self.text = content
         self.new_text = []
+        self.color_tx = (0, 0, 0)
+        self.background_color = (0, 0, 0)
         super().__init__(user_name, location, description, likes_counter, comments)
 
-    def text(self):
-        self.new_text = from_text_to_array(self.text())
-        self.new_text = font.render(self.new_text, True, BLACK)
+    def process_text(self):
+        self.new_text = from_text_to_array(self.text)
 
-    def text_color(self):
-        pass
+    # def text_color(self):
+    #     color_tx = input("Which color you want to use: BLACK, WHITE, GREY, or LIGHT_GREY")
+    #     if color_tx.upper() not in COLORS:
+    #         print("There is no color like that, try another one: ")
+    #         return self.text_color()
+    #
+    #     self.color_tx = COLORS[color_tx.upper()]
+    #
+    # def background_text_color(self):
+    #     background_color = input("Which color you want to use: BLACK, WHITE, GREY, or LIGHT_GREY")
+    #     if background_color.upper() not in COLORS:
+    #         print("There is no color like that, try another one: ")
+    #         return self.background_text_color()
+    #     elif COLORS[background_color] == self.color_tx:
+    #         print("If you choose this color you want see the text, try another one: ")
+    #         return self.background_text_color()
+    #
+    #     self.background_color = COLORS[background_color.upper()]
 
+    def display_post_text(self):
+        # self.text_color()
+        # self.background_text_color()
+        text_surface = font.render(self.text, True, BLACK, WHITE)
+        text_rect = text_surface.get_rect(center=(screen.get_width()//2, screen.get_height()//2))
+        screen.blit(text_surface, text_rect)
 
-    #test
-    #def display_post_text(self):
-     #   post_text = pygame.image.load(self.text)
-      #  post_text = pygame.transform.scale(post_text, (POST_WIDTH, POST_HEIGHT))
-       # screen.blit(post_text, (POST_X_POS, POST_Y_POS))
+    def display(self):
+        self.display_post_text()
+        super().display()
+
+class Comment:
+    def __init__(self, comment_text):
+        self.comment_text = read_comment_from_user()
 
 
 
@@ -101,7 +139,10 @@ def main():
     font = pygame.font.Font(None, 20)
     running = True
 
-    post = ImagePost('Pidor', 'Daun', "pidoras ebany", "100", "0", RONALDO_IMG)
+    post = ImagePost("USER_NAME", "LOCATION", "DESCRIPTION", "LIKES_COUNTER",
+                     "COMMENT", RONALDO_IMG)
+
+
     # Display the background, presented Image, likes, comments, tags and location(on the Image)
     screen.fill(BLACK)
     screen.blit(background, (0, 0))

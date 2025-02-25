@@ -5,6 +5,11 @@ WINDOW_HEIGHT = 720
 BACKGROUND_IMG = 'Images/background.png'
 RONALDO_IMG = 'Images/ronaldo.jpg'
 
+USER_NAME = "Nazar"
+LOCATION = "Israel"
+DESCRIPTION = "Just do it"
+LIKES_COUNTER = 0
+COMMENT = []
 # Post proportions
 
 # X, Y represent the top left corner of the Post
