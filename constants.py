@@ -2,8 +2,11 @@
 
 WINDOW_WIDTH = 360
 WINDOW_HEIGHT = 720
+BACKGROUND_IMG = 'Images/background.png'
+RONALDO_IMG = 'Images/ronaldo.jpg'
 
 # Post proportions
+
 # X, Y represent the top left corner of the Post
 POST_WIDTH = 0.87 * WINDOW_WIDTH
 POST_HEIGHT = 0.41 * WINDOW_HEIGHT
