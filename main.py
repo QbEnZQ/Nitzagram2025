@@ -75,7 +75,7 @@ class TextPost(Post):
         pass
 
 
-
+    #test
     #def display_post_text(self):
      #   post_text = pygame.image.load(self.text)
       #  post_text = pygame.transform.scale(post_text, (POST_WIDTH, POST_HEIGHT))
